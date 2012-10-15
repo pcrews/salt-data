@@ -2,6 +2,18 @@ haproxy:
   pkg:
     - installed
 
+git:
+  pkg:
+   - installed 
+
+gearman-job-server:
+  pkg:
+    - installed
+
+python-setuptools:
+   pkg:
+    - installed
+
 /etc/sudoers:
   file:
     - managed
@@ -9,22 +21,20 @@ haproxy:
     - user: root
     - mode: 400
 
-/home/ubuntu/libra:
-  file.directory:
-    - user: root
-    - group: root
-    - makedirs: True
-
-libra.git:
-   git.clone:
-    - cwd: /home/ubuntu/libra
-    - repository: https://github.com/LBaaS/libra.git
-#    - require:
-#      - file: /home/ubuntu/libra
+libra-git:
+   require:
+     - pkg: git
+   git.latest:
+    - cwd: /home/ubuntu
+    - name: https://github.com/LBaaS/libra.git
+    - target: /home/ubuntu/libra
+    - force: True
 
 setup-libra-worker:
-  cmd.wait:
+  require:
+    - pkg: git
+    - pkg: python-setuptools
+  cmd.run:
     - name: 'sudo python setup.py install'
-    - cwd: /home/ubuntu
-    - require:
-      - file: /home/ubuntu/libra
+    - cwd: /home/ubuntu/libra
+    - order: last
