@@ -3,9 +3,5 @@ base:
         - lbaas-test-apacheserver 
     'lbaas-test-stress*':
         - lbaas-test-stress-server
-    'lbaas-haproxy-node*':
+    'server-1350320669-az-3-region-a-geo-1.novalocal':
         - lbaas-haproxy-node
-    'salt-master*':
-        - salt-master
-    '*':
-        - salt-minion
