@@ -19,9 +19,11 @@ The primary requirement for working with this data is saltstack.
 All states were written / tested against ubuntu 12.04 vm's on hp's cloud
 
 Primary documentation is located here and includes information on installation and configuration:
+
 http://docs.saltstack.org/en/latest/index.html
 
 The file is intended to serve as the file server root as noted here:
+
 http://docs.saltstack.org/en/latest/topics/tutorials/states_pt1.html#setting-up-the-salt-state-tree
 
 The salt-cloud map files are intended to work with the naming conventions used in the top.sls file
@@ -37,6 +39,7 @@ Through the mapping and profile files, one can quickly create vm's and then conf
 salt-cloud's delete functionality facilitates quick disposal of test vm's as well.
 
 Configuration information is here:
+
 https://salt-cloud.readthedocs.org/en/latest/topics/config.html
 
 For working with HP Cloud, there are additional notes.
@@ -82,7 +85,10 @@ An example::
 
 This means that if one calls salt-cloud to use this mapfile, that two servers - lbaas-api11 and lbaas-api22 - will be created based on the base_hp_az3 profile.
 
-To create the vm's (the -P option is used to create the vm's in parallel)::
+To create the vm's (the -P option is used to create the vm's in parallel)
+
+::
+
  /home/ubuntu# time salt-cloud -P -m testmap.dat 
  The following virtual machines are set to be created:
    lbaas-api22
@@ -109,12 +115,38 @@ To create the vm's (the -P option is used to create the vm's in parallel)::
  user	0m3.788s
  sys	0m0.180s
 
-Once finished, the nodes will be registered with the salt-master::
+Once finished, the nodes will be registered with the salt-master
+
+::
 
  /home/ubuntu# salt 'lbaas-api*' test.ping
  lbaas-api11: True
  lbaas-api22: True
 
-To configure them, call state.highstate (one can target minions in a variety of ways - please refer to salt docs)::
+To configure them, call state.highstate (one can target minions in a variety of ways - please refer to salt docs)
+
+::
 
  /home/ubuntu# time salt 'lbaas-api*' state.highstate
+
+ ----------
+    State: - cmd
+    Name:      ./lbaas.sh start
+    Function:  run
+        Result:    True
+        Comment:   Command "./lbaas.sh start" run
+        Changes:   pid: 12212
+                   retcode: 0
+                   stderr: 
+                   stdout: starting lbaas ...
+ application : ./target/lbaas-0.0.1-jar-with-dependencies.jar
+ logging cfg : file:/home/ubuntu/lbaas/lbaas-10-24-2012/log4j.properties
+ started
+                   
+
+ real	2m56.536s
+ user	0m0.304s
+ sys	0m0.056s
+
+The above example completed all of the steps necessary to create, build, and start an lbaas-api server and it was done quickly!
+
