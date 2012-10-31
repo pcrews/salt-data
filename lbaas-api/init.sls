@@ -13,16 +13,31 @@ gearman-job-server:
     - installed
     - order: 3
 
-java7-jdk:
-  pkg:
-    - installed
-    - order: 4 
+add-oracle-ppa:
+  cmd.run:
+    - name: 'sudo add-apt-repository ppa:webupd8team/java -y'
+    - order: 4
+
+update-repo:
+  cmd.run:
+    - name: 'sudo apt-get update'
+    - order: 5
+
+turn-off-interative:
+  cmd.run:
+    - name: 'export DEBIAN_FRONTEND=noninteractive'
+    - order: 6
+
+install-oracle-java7:
+  cmd.run:
+    - name: 'sudo apt-get -y install oracle-java7-installer'
+    - order: 7
 
 lbaas-api-git:
    require:
      - pkg: git
    git.latest:
-    - order: 5 
+    - order: 8 
     - cwd: /home/ubuntu
     #- name: https://github.com/LBaaS/lbaas-api.git
     - name: https://github.com/pcrews/lbaas-api.git
@@ -33,7 +48,7 @@ add-gearman-m2-repo:
   cmd.run:
     - name: 'mvn install:install-file -DgroupId=gearman -DartifactId=java-gearman-service -Dversion=0.6.5 -Dpackaging=jar -Dfile=gearman/java-gearman-service-0.6.5.jar'
     - cwd: /home/ubuntu/lbaas-api
-    - order: 6  
+    - order: 9  
 
 build-lbaas-api:
   require:
@@ -41,7 +56,7 @@ build-lbaas-api:
   cmd.run:
     - name: 'mvn clean install'
     - cwd: /home/ubuntu/lbaas-api
-    - order: 7 
+    - order: 10 
 
 build-lbaas-api2:
   require:
@@ -49,17 +64,17 @@ build-lbaas-api2:
   cmd.run:
     - name: 'mvn assembly:assembly'
     - cwd: /home/ubuntu/lbaas-api
-    - order: 8  
+    - order: 11  
 
 python-mysqldb:
   pkg:
     - installed
-    - order: 9 
+    - order: 12 
 
 mysql-server:
   pkg:
    - installed
-   - order: 10
+   - order: 13
 
 # initialize / create the db's
 # only do this if the db doesn't exist
@@ -68,14 +83,14 @@ install-lbaas-db:
     - name: 'mysql -uroot < mysql/lbaas.sql'
     - cwd: /home/ubuntu/lbaas-api
     - unless: 'mysql -uroot -e "SHOW TABLES IN lbaas"' 
-    - order: 11
+    - order: 14
 
 # mysql-lbaas user
 lbaas:
   mysql_user.present:
     - host: localhost
     - password_hash: '*44547F3114959B118AD02CBAB98C322F56007386'
-    - order: 12
+    - order: 15
 
 # make logs dir
 /home/ubuntu/lbaas-api/logs:
@@ -83,7 +98,7 @@ lbaas:
     - group: users
     - mode: 755
     - makedirs: True
-    - order: 13
+    - order: 16
 
 start-api-server:
   cmd.run:

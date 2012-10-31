@@ -1,10 +1,12 @@
 base:
+    'lbaas*':
+      - users
     'salt-master*lbaas*':
-        - salt-master
+      - salt-master
     'lbaas-webserver*':
-        - lbaas-apache 
+      - lbaas-apache 
     'lbaas-stress*':
-        - lbaas-stress
+      - lbaas-stress
     'lbaas-haproxy*':
       - lbaas-haproxy
     'lbaas-api*':
