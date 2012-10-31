@@ -1,27 +1,19 @@
-salt:
+salt-master:
   pkg:
-    - installed
+    - latest 
   service.running:
     - require:
-      - file: /etc/salt/minion
-      - pkg: salt
+      - file: /etc/salt/master
+      - pkg: salt-master
     - watch:
-        - file: /etc/salt/minion
+        - file: /etc/salt/master
 
 /etc/salt/master:
   file.managed:
-    - source: salt://salt/salt-master/master
+    - source: salt://salt-master/master
     - user: root
     - group: root
     - mode: 644
     - require:
-      - pkg: salt
+      - pkg: salt-master
 
-/etc/salt/minion:
-    file.managed:
-    - source: salt://salt/salt-minion/minion
-    - user: root
-    - group: root
-    - mode: 644
-    - require:
-      - pkg: salt

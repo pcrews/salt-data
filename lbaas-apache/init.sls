@@ -25,21 +25,6 @@ apache2:
     - require:
       - pkg: apache2
 
-/var/www/10k-static.html:
-  file:
-    - managed
-    - source: salt://lbaas-test-apacheserver/10k-static.html
-    - require:
-      - pkg: apache2
-
-/var/www/100k-static.html:
-  file:
-    - managed
-    - source: salt://lbaas-test-apacheserver/100k-static.html
-    - require:
-      - pkg: apache2
-
-
 /var/www/ssl-protected:
   file.directory:
     - user: root 
@@ -66,22 +51,6 @@ apache2:
   file:
     - managed
     - source: salt://lbaas-test-apacheserver/1k-random.py
-    - require:
-      - pkg:  apache2
-    - mode: 777
-
-/usr/lib/cgi-bin/10k-random.py:
-  file:
-    - managed
-    - source: salt://lbaas-test-apacheserver/10k-random.py
-    - require:
-      - pkg:  apache2
-    - mode: 777
-
-/usr/lib/cgi-bin/100k-random.py:
-  file:
-    - managed
-    - source: salt://lbaas-test-apacheserver/100k-random.py
     - require:
       - pkg:  apache2
     - mode: 777
