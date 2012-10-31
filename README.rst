@@ -6,11 +6,11 @@ files for salt and salt-cloud to facilitate
 testing / working with the libra lbaas code
 
 These files will enable one to create and configure vm's for:
-- the lbaas api server
-- the libra gearman worker nodes
-- the pool manager
-- apache test servers
-- stress servers
+ - the lbaas api server
+ - the libra gearman worker nodes
+ - the pool manager
+ - apache test servers
+ - stress servers
 
 saltstack
 -----------
