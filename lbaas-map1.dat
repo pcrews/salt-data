@@ -1,0 +1,7 @@
+hp_az3_large:
+ - lbaas-api1
+ - lbaas-webserver111
+
+hp_az3_small:
+  - lbaas-haproxy1
+  - lbaas-haproxy2

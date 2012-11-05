@@ -7,21 +7,21 @@ apache2:
 /var/www/tester.html:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/tester.html
+    - source: salt://lbaas-apache/tester.html
     - require:
       - pkg: apache2
 
 /var/www/csj.mp4:
     file:
       - managed
-      - source: salt://lbaas-test-apacheserver/csj.mp4
+      - source: salt://lbaas-apache/csj.mp4
       - require:
         - pkg:  apache2
 
 /var/www/1k-static.html:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/1k-static.html
+    - source: salt://lbaas-apache/1k-static.html
     - require:
       - pkg: apache2
 
@@ -34,7 +34,7 @@ apache2:
 /var/www/ssl-protected/ssl-tester.html:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/ssl-tester.html
+    - source: salt://lbaas-apache/ssl-tester.html
     - require:
       - pkg: apache2
       - file: /var/www/ssl-protected
@@ -42,7 +42,7 @@ apache2:
 /usr/lib/cgi-bin/ident-cgi.py:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/ident-cgi.py
+    - source: salt://lbaas-apache/ident-cgi.py
     - require:
       - pkg:  apache2
     - mode: 777
@@ -50,7 +50,7 @@ apache2:
 /usr/lib/cgi-bin/1k-random.py:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/1k-random.py
+    - source: salt://lbaas-apache/1k-random.py
     - require:
       - pkg:  apache2
     - mode: 777
@@ -58,7 +58,7 @@ apache2:
 /etc/apache2/sites-available/default:
   file:
     - managed
-    - source: salt://lbaas-test-apacheserver/default
+    - source: salt://lbaas-apache/default
     - require:
       - pkg: apache2
 
