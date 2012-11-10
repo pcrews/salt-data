@@ -8,6 +8,11 @@ maven:
    - installed 
    - order: 2
 
+gearman-job-server:
+  pkg:
+    - installed
+    - order: 3
+
 debconf-utils:
   pkg:
     - installed
@@ -44,7 +49,8 @@ lbaas-api-git:
    git.latest:
     - order: 9 
     - cwd: /home/ubuntu
-    - name: https://github.com/LBaaS/lbaas-api.git
+    #- name: https://github.com/LBaaS/lbaas-api.git
+    - name: https://github.com/pcrews/lbaas-api.git
     - target: /home/ubuntu/lbaas-api
     - force: True
 
@@ -55,16 +61,46 @@ add-gearman-m2-repo:
     - order: 10  
 
 build-lbaas-api:
+  require:
+    - pkg: git
   cmd.run:
     - name: 'mvn clean install'
     - cwd: /home/ubuntu/lbaas-api
     - order: 11 
 
 build-lbaas-api2:
+  require:
+    - pkg: git
   cmd.run:
     - name: 'mvn assembly:assembly'
     - cwd: /home/ubuntu/lbaas-api
     - order: 12  
+
+python-mysqldb:
+  pkg:
+    - installed
+    - order: 13 
+
+mysql-server:
+  pkg:
+   - installed
+   - order: 14
+
+# initialize / create the db's
+# only do this if the db doesn't exist
+install-lbaas-db:
+  cmd.run:
+    - name: 'mysql -uroot < mysql/lbaas.sql'
+    - cwd: /home/ubuntu/lbaas-api
+    - unless: 'mysql -uroot -e "SHOW TABLES IN lbaas"' 
+    - order: 15
+
+# mysql-lbaas user
+lbaas:
+  mysql_user.present:
+    - host: localhost
+    - password_hash: '*44547F3114959B118AD02CBAB98C322F56007386'
+    - order: 16
 
 # make logs dir
 /home/ubuntu/lbaas-api/logs:
